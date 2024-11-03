@@ -5,7 +5,7 @@ URL:            https://github.com/sxyazi/yazi
 Source0:        https://github.com/sxyazi/yazi/archive/refs/tags/v%{version}.tar.gz
 Summary:        Blazing fast terminal file manager written in Rust, based on async I/O
 License:        MIT
-BuildRequires :  rustc ImageMagick
+BuildRequires : rustc ImageMagick-dev
 
 
 %description
@@ -22,11 +22,12 @@ export RUSTFLAGS="$RUSTFLAGS -C target-cpu=westmere -C target-feature=+avx,+fma,
 export YAZI_GEN_COMPLETIONS=true
 export VERGEN_GIT_SHA="Clear Linux"
 cargo build --release
-strip target/release/yazi
+strip target/release/yazi target/release/ya
 
 
 %install
 install -Dm755 target/release/yazi %{buildroot}/usr/bin/yazi
+install -Dm755 target/release/ya %{buildroot}/usr/bin/ya
 install -Dm644 assets/yazi.desktop %{buildroot}/usr/share/applications/yazi.desktop
 install -dm0755 %{buildroot}/usr/share/icons/hicolor/128x128/apps
 convert assets/logo.png -resize 128x128 %{buildroot}/usr/share/icons/hicolor/128x128/apps/yazi.png
@@ -39,6 +40,7 @@ install -Dm644 yazi-boot/completions/_yazi -t %{buildroot}/usr/share/zsh/site-fu
 %files
 %defattr(-,root,root,-)
 /usr/bin/yazi
+/usr/bin/ya
 /usr/share/applications/yazi.desktop
 /usr/share/icons/hicolor/128x128/apps/yazi.png
 /usr/share/bash-completion/completions/yazi
